@@ -66,6 +66,21 @@ async def lifespan(_app: FastAPI):
 app = FastAPI(title="Day 12 Production Agent", version=SERVICE_VERSION, lifespan=lifespan)
 
 
+@app.get("/")
+def root():
+    return {
+        "service": SERVICE_NAME,
+        "version": SERVICE_VERSION,
+        "status": "running",
+        "endpoints": {
+            "health": "/health",
+            "ready": "/ready",
+            "docs": "/docs",
+            "ask": "/ask (POST)",
+        },
+    }
+
+
 class AskRequest(BaseModel):
     question: str = Field(min_length=1, max_length=2000)
 
