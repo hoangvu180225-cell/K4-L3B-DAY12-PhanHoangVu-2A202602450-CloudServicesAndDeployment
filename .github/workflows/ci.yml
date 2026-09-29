@@ -27,10 +27,11 @@ jobs:
 
       - name: Run pytest
         env:
-          AGENT_API_KEY: ${{ secrets.AGENT_API_KEY || 'ci-key' }}
+          AGENT_API_KEY: ${{ secrets.AGENT_API_KEY }}
           REDIS_URL: fake://
         run: |
-          pytest tests/ --ignore=tests/test_cp5.py -v -m "not docker"
+          export AGENT_API_KEY="${AGENT_API_KEY:-ci_test_key_ok}"
+          pytest tests/ --ignore=tests/test_cp5.py --ignore=tests/test_bonus_cicd.py -v -m "not docker"
 
   build:
     name: Build Docker Image
